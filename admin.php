@@ -1,14 +1,6 @@
 <?php
 $apps = file('sendmail.php');
 
-// foreach($apps as $line) {
-    
-    
-    
-//     echo "$line<hr>";
-// }
-
-
 echo '<table>';
     
     foreach($apps as $line) {
@@ -26,7 +18,6 @@ echo '<table>';
 
 echo '</table>';
 
-// var_dump($apps);
 
 ?>
 <style>

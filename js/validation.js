@@ -5,7 +5,7 @@
 document.addEventListener('DOMContentLoaded', function(){
 
     $('#massageError').hide();
-    // $('.content-form__success').hide();
+    $('.content-form__success').hide();
 
     const form = document.getElementById('form');
 
@@ -33,16 +33,27 @@ document.addEventListener('DOMContentLoaded', function(){
         
         if(error === 0){
             
-            alert('JS sending data to PHP');
-            console.log('validation success');
-           
-            console.log(dataArray);
+            // alert('JS sending data to PHP');
+            // console.log('validation success');
 
             $('.content-form__validation').hide();
             $('.content-form__success').show();
+
+            
+            let response = await fetch ('validator.php', {
+                method: 'POST',
+                body: formData
+            });
+            if(response.ok) {
+                let result = await response.json();
+                alert(result.message);
+
+            }else {
+                alert("Error");
+            }
             
         }else {
-            alert('JS Validation unsuccess');
+            //alert('JS Validation unsuccess');
         }
     }
 
@@ -52,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function(){
             let error = 0;
 
             let formReq = document.querySelectorAll('._req');
-            
+          
 
             for (let index = 0; index < formReq.length; index++) {
                 const input = formReq[index];
@@ -72,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function(){
                             $('#massageError').show();
                             
                             error++;
+                            return false;
                             
                              
                         }else if(emailTest(input)){
@@ -81,10 +93,10 @@ document.addEventListener('DOMContentLoaded', function(){
                             $('#massageError').html ('Please provide a valid e-mail address');
                             $('#massageError').show();
                                                      
-                            error++;  
+                            error++;
+                            return false;  
                             
-                        }
-                            else if(input.value !== '') {
+                        }else if(input.value !== '') {
                                 
                                 let simbolPointArray = new Array();
                                 let domainArray = new Array();
@@ -108,6 +120,7 @@ document.addEventListener('DOMContentLoaded', function(){
                                         $('#massageError').html ('We are not accepting subscriptions from Colombia emails');
                                         $('#massageError').show();
                                         error++;
+                                        return false; 
                                     }
                       
                             }                 
@@ -116,6 +129,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     $('#massageError').show();
                     
                     error++;
+                    return false;
                 }
             }
             return error;                   

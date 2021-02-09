@@ -1,11 +1,15 @@
 <?php
 
+
 echo '<style>.content-form__success { display:none;}</style>';
+
+
+
 
 
 if(count($_POST) > 0){
 
-    print_r($_POST);
+    //print_r($_POST);
     $msg = '';
     $email = trim($_POST['email']);
     $today = date("Y-m-d H:i:s");
@@ -20,10 +24,20 @@ if(count($_POST) > 0){
                     
                 }elseif(isset($_POST['agree']) && strlen($_POST['agree']) > 0) {
                              
+                        
                             file_put_contents('sendmail.php', "$today-|-$email\n", FILE_APPEND);
                             echo '<style>.content-form__validation { display:none;}</style>';
                             echo '<style>.content-form__success { display:block;}</style>';
+                            
+                                
+                            $message = 'data send';
                         
+                            $response = ['message' => $message];
+                            header('Content-type: application/json');
+                            echo json_encode($response);
+
+
+
                     }else {
                         $msg = 'You must accept the terms and conditions';
                     }
@@ -35,10 +49,13 @@ if(count($_POST) > 0){
     }else{
         $msg = 'ERROR';
     }
-   
+    
 
 }else{
     $msg = '';
+    
 }
+
+
 
 ?>
